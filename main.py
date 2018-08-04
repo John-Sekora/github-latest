@@ -9,12 +9,22 @@ import requests
 if __name__ == "__main__":
     username = sys.argv[1]
 
-    # TODO:
-    #
-    # 1. Retrieve a list of "events" associated with the given user name
-    # 2. Print out the time stamp associated with the first event in that list.
+    response = requests.get('https://api.github.com/users/{}/events/public'.format(username))
+    event = response.json()[0]['type']
+    stamp = response.json()[0]['created_at']
+    print("\n")
+    print("The user {}'s latest event was {}, performed on {}".format(username,
+                                                                       event,
+                                                                       stamp))
+    print("\n")
+    answer = input("Would you like to see previous events? (y/n):    ")
+    if answer.lower() == "y":
+        print("\n")
+        history = list(range(0, 10))
+        for i in history:
+            event = response.json()[i]['type']
+            stamp = response.json()[i]['created_at']
+            print("{} -  {}".format(event, stamp))
 
-    print("COMPLETE THE TODOs")
-    
-
-
+    else:
+        pass
